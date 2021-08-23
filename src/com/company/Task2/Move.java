@@ -1,125 +1,164 @@
 package com.company.Task2;
 
-import java.util.Map;
+import java.util.List;
+
 
 public class Move {
-    private static Map<Integer, char[][]> labyrinth;
-    private static int step;
+    private List<Point> labyrinth;
+    private int step;
 
+    public Move(List<Point> labyrinth) {
+        this.labyrinth = labyrinth;
 
-    public static int RescuePrincess(int level, int x, int y, int positionRowLast, int positionColoumLast) {
-        labyrinth = Labyrinth.getLabyrinth();
-        char[][] levelThis = labyrinth.get(level);
-        System.out.println("level= " + level);
-        if (level < labyrinth.size()) {
-            char[][] levelNext = labyrinth.get(level + 1);
+    }
+    public int RescuePrincessStart(Point point){
+        return RescuePrincess(point,0,0);
+    }
 
-            if (Condition.nextLevelFreeSpace(levelThis[x][y],levelNext[x][y])) {
-                return breakFloor(level,x,y);
+    private int RescuePrincess(Point point, int positionRowLast, int positionColoumLast) {
+
+        System.out.println("level= " + point.getLevel());
+        if (point.getLevel() < Labyrinth.getH()) {
+            Point pointUnderFloor = getPointUnderFloor(point);
+            if (Condition.nextLevelFreeSpace(point.getValue(),pointUnderFloor.getValue())) {
+                return breakFloor(pointUnderFloor);
             }
-        } else if (level == labyrinth.size()) {
-
-            if ((x != 0)) {
-                if ((levelThis[x - 1][y] == Symbols.PRINCES)) {
+        }
+        if (point.getLevel() == Labyrinth.getH()) {
+            if ((point.getX() != 0)) {
+                if ((getPointUp(point).getValue() == Symbols.PRINCES)) {
                     step += 1;
                     return step;
                 }
-                if ((levelThis[x - 1][y] == Symbols.FREE_SPACE) && (positionRowLast != (x - 1))) {
-                    return stepUp(level, x, y);
-                }
-                //
             }
-            if (x != (Labyrinth.getM() - 1)) {
-                if ((levelThis[x + 1][y] == Symbols.PRINCES)) {
+            if (point.getX() != (Labyrinth.getM() - 1)) {
+                if ((getPointDown(point).getValue() == Symbols.PRINCES)) {
                     step += 1;
                     return step;
                 }
-                if ((levelThis[x + 1][y] == Symbols.FREE_SPACE) && (positionRowLast != x + 1)) {
-                    return stepDown(level, x, y);
-                }
-
             }
-            if (y != 0) {
-                if ((levelThis[x][y - 1] == Symbols.PRINCES)) {
+            if (point.getY() != 0) {
+                if ((getPointLeft(point).getValue() == Symbols.PRINCES)) {
                     step += 1;
                     return step;
                 }
-                if ((levelThis[x][y - 1] == Symbols.FREE_SPACE) && (positionColoumLast != (y - 1))) {
-                    return stepLeft(level, x, y);
-                }
             }
-            if (y != (Labyrinth.getN() - 1)) {
-                if ((levelThis[x][y + 1] == Symbols.PRINCES)) {
+            if (point.getY() != (Labyrinth.getN() - 1)) {
+                if ((getPointRight(point).getValue() == Symbols.PRINCES)) {
                     step = (step + 1);
                     return step;
                 }
-                if ((levelThis[x][y + 1] == Symbols.FREE_SPACE) && (positionColoumLast != y + 1)) {
-                    return stepRight(level, x, y);
-                }
-            }
-            return step;
-        }
-        if ((x != 0)) {
-            if ((levelThis[x - 1][y] == Symbols.FREE_SPACE) && (positionRowLast != (x - 1))) {
-                return stepUp(level, x, y);
             }
         }
-        if (x != (Labyrinth.getM() - 1)) {
-            if ((levelThis[x + 1][y] == Symbols.FREE_SPACE) && (positionRowLast != x + 1)) {
-                return stepDown(level, x, y);
+        //!!!!!
+        if ((point.getX() != 0)) {
+            if ((getPointUp(point).getValue() == Symbols.FREE_SPACE) && (positionRowLast != (point.getX() - 1))) {
+                return stepUp(getPointUp(point));
             }
         }
-        if (y != 0) {
-            if ((levelThis[x][y - 1] == Symbols.FREE_SPACE) && (positionColoumLast != (y - 1))) {
-                return stepLeft(level, x, y);
+        if (point.getX() != (Labyrinth.getM() - 1)) {
+            if ((getPointDown(point).getValue()== Symbols.FREE_SPACE) && (positionRowLast != point.getX() + 1)) {
+                return stepDown(getPointDown(point));
             }
         }
-        if (y != (Labyrinth.getN() - 1)) {
-            if ((levelThis[x][y + 1] == Symbols.FREE_SPACE) && (positionColoumLast != y + 1)) {
-                return stepRight(level, x, y);
+        if (point.getY() != 0) {
+            if ((getPointLeft(point).getValue() == Symbols.FREE_SPACE) && (positionColoumLast != (point.getY() - 1))) {
+                return stepLeft(getPointLeft(point));
             }
         }
-        RescuePrincess(level, positionRowLast,positionColoumLast,x,y);
-           //System.out.println("i don't know, what i will do");
+        if (point.getY() != (Labyrinth.getN() - 1)) {
+            if ((getPointRight(point).getValue() == Symbols.FREE_SPACE) && (positionColoumLast != point.getY() + 1)) {
+                return stepRight(getPointRight(point));
+            }
+        }
+       // RescuePrincess(level, positionRowLast, positionColoumLast, x, y);
+        //System.out.println("i don't know, what i will do");
         return -1;
     }
 
-    public static int stepLeft(int level, int x, int y) {
+    private int stepLeft(Point point) {
         System.out.println("step left");
         step += 1;
         System.out.println(step);
-        int i = RescuePrincess(level, x, y - 1, x, y);
+        int i = RescuePrincess(point, point.getX(), point.getY()+1);
         return step;
     }
 
-    public static int stepRight(int level, int x, int y) {
+    private int stepRight(Point point) {
         System.out.println("step right");
         step += 1;
         System.out.println(step);
-        int i = RescuePrincess(level, x, y + 1, x, y);
+        int i = RescuePrincess(point, point.getX(), point.getY()-1);
         return step;
     }
 
-    public static int stepUp(int level, int x, int y) {
+    private int stepUp(Point point) {
         System.out.println("step up");
         step += 1;
         System.out.println(step);
-        int i = RescuePrincess(level, x - 1, y, x, y);
+        int i = RescuePrincess(point, point.getX()+1, point.getY());
         return step;
     }
 
-    public static int stepDown(int level, int x, int y) {
+    private int stepDown(Point point) {
         System.out.println("step down");
         step += 1;
         System.out.println(step);
-        int i = RescuePrincess(level, x + 1, y, x, y);
+        int i = RescuePrincess(point, point.getX()-1, point.getY());
         return step;
     }
-    public static int breakFloor(int level, int x, int y){
+
+    private int breakFloor(Point point) {
         step += 1;
-        RescuePrincess(level + 1, x, y, x, y);
+        RescuePrincess(point, point.getX(), point.getY());
         return step;
     }
+
+    private Point getPointLeft(Point point) {
+        Point pointResult = labyrinth
+                .stream()
+                .filter(p -> ((p.getLevel() == point.getLevel()) && (p.getX() == point.getX()) && (p.getY() == point.getY() - 1)))
+                .findFirst()
+                .orElse(null);
+        return pointResult;
+    }
+
+    private Point getPointRight(Point point) {
+        Point pointResult = labyrinth
+                .stream()
+                .filter(p -> ((p.getLevel() == point.getLevel()) && (p.getX() == point.getX()) && (p.getY() == point.getY() + 1)))
+                .findFirst()
+                .orElse(null);
+        return pointResult;
+    }
+
+    private Point getPointUp(Point point) {
+        Point pointResult = labyrinth
+                .stream()
+                .filter(p -> ((p.getLevel() == point.getLevel()) && (p.getX() == point.getX() - 1) && (p.getY() == point.getY())))
+                .findFirst()
+                .orElse(null);
+        return pointResult;
+    }
+    private Point getPointDown(Point point) {
+        Point pointResult = labyrinth
+                .stream()
+                .filter(p -> ((p.getLevel() == point.getLevel()) && (p.getX() == point.getX() + 1) && (p.getY() == point.getY())))
+                .findFirst()
+                .orElse(null);
+        return pointResult;
+    }
+
+    private Point getPointUnderFloor(Point point) {
+        Point pointResult = labyrinth
+                .stream()
+                .filter(p -> ((p.getLevel() == point.getLevel() + 1) && (p.getX() == point.getX()) && (p.getY() == point.getY())))
+                .findFirst()
+                .orElse(null);
+        return pointResult;
+    }
+
+
 
 
 }

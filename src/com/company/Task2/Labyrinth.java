@@ -4,26 +4,20 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class Labyrinth {
     private static int h; //H blocks
     private static int m; // M rows
     private static int n; //N columns
 
-    private static Map<Integer, char[][]> labyrinth;
+    private static List<Point> labyrinth;
     private static String FILE_NAME = "INPUT.TXT";
 
-    public static void printLabyrinth(Map<Integer, char[][]> labyrinth) {
-        for (Map.Entry<Integer, char[][]> entry : labyrinth.entrySet()) {
-            System.out.println("Level: " + entry.getKey());
-            printMatrix(entry.getValue());
-        }
-    }
-
     public static void makeLabyrinth() {
-        String path = FormatePathInputTXT.getPath(Task2.class) + FILE_NAME;
+        String path = FormatePathInputTXT.getPath(Labyrinth.class) + FILE_NAME;
 
         try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
             String firstLine = reader.readLine();
@@ -31,27 +25,27 @@ public class Labyrinth {
             h = Integer.parseInt(s[0]); //H blocks
             m = Integer.parseInt(s[1]);// M rows
             n = Integer.parseInt(s[2]); //N columns
-            Map<Integer, char[][]> laberint = new HashMap<>();
-            String line = reader.readLine();
-            for (int i = 0; i < h; i++) {
+
+            List<Point> list = new ArrayList<>();
+            String line = reader.readLine(); // empty string
+            for (int level = 1; level <= h; level++) {
                 line = reader.readLine();
-                char[][] matrixLevel = new char[m][n];
-                for (int i1 = 0; i1 < m; i1++) {
+
+                for (int x = 0; x < m; x++) {
                     if (line.length() == n && line.matches("[.o21]{3}")) {
-                        for (int i2 = 0; i2 < n; i2++) {
-                            matrixLevel[i1][i2] = line.charAt(i2);
+                        for (int y = 0; y < n; y++) {
+                            list.add(new Point(level, x, y, line.charAt(y)));
                         }
                     } else {
                         throw new IllegalArgumentException("file contains lines that do not fit the conditional:\n" +
                                 " H- blocks, M -rows,N columns");
                     }
-                    laberint.put(i + 1, matrixLevel);
                     line = reader.readLine();
                 }
             }
-            Labyrinth.printLabyrinth(laberint);  //It's for my test
+            printLabyrinth(list);  //It's for my test
 
-            labyrinth = laberint;
+            labyrinth = list;
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -71,15 +65,22 @@ public class Labyrinth {
         return n;
     }
 
-    public static Map<Integer, char[][]> getLabyrinth() {
+    public static List<Point> getLabyrinth() {
         return labyrinth;
     }
-    private static void printMatrix(char[][] matrix) {
-        for (int i = 0; i < matrix.length; i++) {
-            for (int j = 0; j < matrix[0].length; j++) {
-                System.out.print(matrix[i][j]);
+
+    public static void printLabyrinth(List<Point> labyrinth) {
+        int count = 0;
+        for (int i = 1; i <= 3; i++) {
+            System.out.println("Level: " + i);
+            for (int j = 0; j < 3; j++) {
+                for (int k = 0; k < 3; k++) {
+                    System.out.print(labyrinth.get(count++));
+                }
+                System.out.println();
             }
             System.out.println();
         }
+
     }
 }

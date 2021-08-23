@@ -1,7 +1,5 @@
 package com.company.Task2;
 
-import com.company.Task2.Task2;
-
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
@@ -41,7 +39,7 @@ public class Task22 {
     }
 
     public static Map<Integer, char[][]> getLabyrinth() {
-        String path = getPath(Task2.class) + "INPUT.TXT";
+        String path = getPath(Task22.class) + "INPUT.TXT";
         long count = 0;
         try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
             String firstLine = reader.readLine();
