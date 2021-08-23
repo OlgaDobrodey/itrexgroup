@@ -69,12 +69,10 @@ public class Point {
 
     @Override
     public int hashCode() {
-        return super.hashCode();
+        int result = String.valueOf(value) == null ? 0 : String.valueOf(value).hashCode();
+        result = result + level*1310+x*137+y*13;
+        return result;
     }
-
-
-
-
 
 
 }

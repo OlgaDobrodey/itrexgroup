@@ -1,117 +1,91 @@
 package com.company.Task2;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
 public class Move {
     private List<Point> labyrinth;
-    private int step;
+    public List<Point> pathPrince;
 
     public Move(List<Point> labyrinth) {
         this.labyrinth = labyrinth;
-
-    }
-    public int RescuePrincessStart(Point point){
-        return RescuePrincess(point,0,0);
     }
 
-    private int RescuePrincess(Point point, int positionRowLast, int positionColoumLast) {
+    public int RescuePrincessStart(Point point) {
+        pathPrince = new ArrayList<>();
+        pathPrince.add(point);
+        int countStepPrince = RescuePrincess(point);
+        System.out.println(pathPrince);
+        return pathPrince.size() - 1;
+    }
+
+    private int RescuePrincess(Point point) {
 
         System.out.println("level= " + point.getLevel());
         if (point.getLevel() < Labyrinth.getH()) {
             Point pointUnderFloor = getPointUnderFloor(point);
-            if (Condition.nextLevelFreeSpace(point.getValue(),pointUnderFloor.getValue())) {
-                return breakFloor(pointUnderFloor);
+            if (Condition.nextLevelFreeSpace(point.getValue(), pointUnderFloor.getValue())) {
+                return step(pointUnderFloor);
             }
         }
         if (point.getLevel() == Labyrinth.getH()) {
             if ((point.getX() != 0)) {
                 if ((getPointUp(point).getValue() == Symbols.PRINCES)) {
-                    step += 1;
-                    return step;
+                    pathPrince.add(getPointUp(point));
+                    return pathPrince.size() - 1;
                 }
             }
             if (point.getX() != (Labyrinth.getM() - 1)) {
                 if ((getPointDown(point).getValue() == Symbols.PRINCES)) {
-                    step += 1;
-                    return step;
+                    pathPrince.add(getPointDown(point));
+                    return pathPrince.size() - 1;
                 }
             }
             if (point.getY() != 0) {
                 if ((getPointLeft(point).getValue() == Symbols.PRINCES)) {
-                    step += 1;
-                    return step;
+                    pathPrince.add(getPointLeft(point));
+                    return pathPrince.size() - 1;
                 }
             }
             if (point.getY() != (Labyrinth.getN() - 1)) {
                 if ((getPointRight(point).getValue() == Symbols.PRINCES)) {
-                    step = (step + 1);
-                    return step;
+                    pathPrince.add(getPointRight(point));
+                    return pathPrince.size() - 1;
                 }
             }
         }
         //!!!!!
         if ((point.getX() != 0)) {
-            if ((getPointUp(point).getValue() == Symbols.FREE_SPACE) && (positionRowLast != (point.getX() - 1))) {
-                return stepUp(getPointUp(point));
+            if ((getPointUp(point).getValue() == Symbols.FREE_SPACE) && (!pathPrince.contains(getPointUp(point)))) {
+                return step(getPointUp(point));
             }
         }
         if (point.getX() != (Labyrinth.getM() - 1)) {
-            if ((getPointDown(point).getValue()== Symbols.FREE_SPACE) && (positionRowLast != point.getX() + 1)) {
-                return stepDown(getPointDown(point));
+            if ((getPointDown(point).getValue() == Symbols.FREE_SPACE) && (!pathPrince.contains(getPointDown(point)))) {
+                return step(getPointDown(point));
             }
         }
         if (point.getY() != 0) {
-            if ((getPointLeft(point).getValue() == Symbols.FREE_SPACE) && (positionColoumLast != (point.getY() - 1))) {
-                return stepLeft(getPointLeft(point));
+            if ((getPointLeft(point).getValue() == Symbols.FREE_SPACE) && (!pathPrince.contains(getPointLeft(point)))) {
+                return step(getPointLeft(point));
             }
         }
         if (point.getY() != (Labyrinth.getN() - 1)) {
-            if ((getPointRight(point).getValue() == Symbols.FREE_SPACE) && (positionColoumLast != point.getY() + 1)) {
-                return stepRight(getPointRight(point));
+            if ((getPointRight(point).getValue() == Symbols.FREE_SPACE) && (!pathPrince.contains(getPointRight(point)))) {
+                return step(getPointRight(point));
             }
         }
-       // RescuePrincess(level, positionRowLast, positionColoumLast, x, y);
+        // RescuePrincess(level, positionRowLast, positionColoumLast, x, y);
         //System.out.println("i don't know, what i will do");
         return -1;
     }
 
-    private int stepLeft(Point point) {
-        System.out.println("step left");
-        step += 1;
-        System.out.println(step);
-        int i = RescuePrincess(point, point.getX(), point.getY()+1);
-        return step;
-    }
-
-    private int stepRight(Point point) {
-        System.out.println("step right");
-        step += 1;
-        System.out.println(step);
-        int i = RescuePrincess(point, point.getX(), point.getY()-1);
-        return step;
-    }
-
-    private int stepUp(Point point) {
-        System.out.println("step up");
-        step += 1;
-        System.out.println(step);
-        int i = RescuePrincess(point, point.getX()+1, point.getY());
-        return step;
-    }
-
-    private int stepDown(Point point) {
-        System.out.println("step down");
-        step += 1;
-        System.out.println(step);
-        int i = RescuePrincess(point, point.getX()-1, point.getY());
-        return step;
-    }
-
-    private int breakFloor(Point point) {
-        step += 1;
-        RescuePrincess(point, point.getX(), point.getY());
-        return step;
+    private int step(Point point) {
+        pathPrince.add(point);
+        System.out.println(pathPrince.size() - 1);
+        int i = RescuePrincess(point);
+        return pathPrince.size() - 1;
     }
 
     private Point getPointLeft(Point point) {
@@ -140,6 +114,7 @@ public class Move {
                 .orElse(null);
         return pointResult;
     }
+
     private Point getPointDown(Point point) {
         Point pointResult = labyrinth
                 .stream()
@@ -157,8 +132,4 @@ public class Move {
                 .orElse(null);
         return pointResult;
     }
-
-
-
-
 }

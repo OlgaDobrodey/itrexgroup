@@ -3,7 +3,6 @@ package com.company.Task2;
 public class Runner {
 
 
-
     public static void main(String[] args) throws Exception {
         Labyrinth.makeLabyrinth();
 
@@ -13,18 +12,15 @@ public class Runner {
                 .findFirst()
                 .orElse(null);
         System.out.println(prince);
+        if (prince != null) {
 
-        int timeRescue = 5* new Move(Labyrinth.getLabyrinth()).RescuePrincessStart(prince);
-
-        System.out.println("step= "+timeRescue/5);
-        System.out.println(timeRescue);
+            int timeRescue = 5 * new Move(Labyrinth.getLabyrinth()).RescuePrincessStart(prince);
+            System.out.println("step= " + timeRescue / 5);
+            System.out.println(timeRescue);
+        }
 
 
     }
-
-
-
-
 
 
 }

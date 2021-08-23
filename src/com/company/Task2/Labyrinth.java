@@ -43,7 +43,7 @@ public class Labyrinth {
                     line = reader.readLine();
                 }
             }
-            printLabyrinth(list);  //It's for my test
+         //   printLabyrinth(list);  //It's for my test
 
             labyrinth = list;
         } catch (FileNotFoundException e) {
