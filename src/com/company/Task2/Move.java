@@ -1,6 +1,7 @@
 package com.company.Task2;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -9,7 +10,15 @@ public class Move {
     public List<Point> pathPrince;
 
     public Move(List<Point> labyrinth) {
-        this.labyrinth = labyrinth;
+
+        this.labyrinth = new ArrayList<>();
+        labyrinth.forEach(point -> {
+            try {
+                this.labyrinth.add((Point) point.clone());
+            } catch (CloneNotSupportedException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     public int RescuePrincessStart(Point point) {
@@ -55,7 +64,6 @@ public class Move {
                 }
             }
         }
-        //!!!!!
         if ((point.getX() != 0)) {
             if ((getPointUp(point).getValue() == Symbols.FREE_SPACE) && (!pathPrince.contains(getPointUp(point)))) {
                 return step(getPointUp(point));
@@ -76,9 +84,13 @@ public class Move {
                 return step(getPointRight(point));
             }
         }
-        // RescuePrincess(level, positionRowLast, positionColoumLast, x, y);
-        //System.out.println("i don't know, what i will do");
-        return -1;
+        point.setValue('o');
+        Boolean remove = pathPrince.remove(point);
+        System.out.println("remove"+ remove);
+
+        RescuePrincess(pathPrince.get(pathPrince.size()-1));
+     //   System.out.println("i don't know, what you to do");
+        return 0;
     }
 
     private int step(Point point) {

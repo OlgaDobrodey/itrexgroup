@@ -6,6 +6,9 @@ public class Point {
     private int y;
     private char value;
 
+    public Point() {
+    }
+
     public Point(int level, int x, int y, char value) {
         this.level = level;
         this.x = x;
@@ -49,13 +52,13 @@ public class Point {
     public String toString() {
         return
                 "Point{" +
-                "level=" + level +
-                ", x=" + x +
-                ", y=" + y +
-                ", value=" +
-                        ""+value
+                        "level=" + level +
+                        ", x=" + x +
+                        ", y=" + y +
+                        ", value=" +
+                        "" + value
                         +
-                '}'
+                        '}'
                 ;
     }
 
@@ -70,9 +73,18 @@ public class Point {
     @Override
     public int hashCode() {
         int result = String.valueOf(value) == null ? 0 : String.valueOf(value).hashCode();
-        result = result + level*1310+x*137+y*13;
+        result = result + level * 1310 + x * 137 + y * 13;
         return result;
     }
 
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
 
+        Point point = new Point();
+        point.level = this.level;
+        point.x = this.x;
+        point.y = this.y;
+        point.value = this.value;
+        return point;
+    }
 }
