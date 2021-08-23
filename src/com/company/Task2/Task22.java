@@ -1,4 +1,6 @@
-package com.company;
+package com.company.Task2;
+
+import com.company.Task2.Task2;
 
 import java.io.*;
 import java.util.HashMap;
@@ -132,7 +134,7 @@ public class Task22 {
                     return step;
                 }
             } if (i2 != (n - 1)) {
-                if((levelThis[i1][i2+1] == '2')){
+                if((levelThis[i1][i2+1]=='2')){
                     step = (step+1);
                     return step ;}
                 if( (levelThis[i1][i2 + 1] == '.') && (positionColoumLast != i2 + 1)) {
