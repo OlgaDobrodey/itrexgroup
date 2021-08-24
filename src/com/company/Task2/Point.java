@@ -1,6 +1,9 @@
 package com.company.Task2;
 
-public class Point {
+
+import java.io.Serializable;
+
+public class Point  implements Serializable {
 
     private int level;
     private int x;
@@ -52,14 +55,14 @@ public class Point {
     @Override
     public String toString() {
         return
-                "Point{" +
-                        "level=" + level +
-                        ", x=" + x +
-                        ", y=" + y +
-                        ", value=" +
+//                "Point{" +
+//                        "level=" + level +
+//                        ", x=" + x +
+//                        ", y=" + y +
+//                        ", value=" +
                         "" + value
-                        +
-                        '}'
+//                        +
+//                        '}'
                 ;
     }
 
@@ -79,7 +82,7 @@ public class Point {
     }
 
     @Override
-    protected Point clone() throws CloneNotSupportedException {
+    public Point clone() throws CloneNotSupportedException {
 
         Point point = new Point();
         point.level = this.level;

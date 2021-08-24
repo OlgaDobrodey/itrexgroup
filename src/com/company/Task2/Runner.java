@@ -1,6 +1,7 @@
 package com.company.Task2;
 
-import java.util.List;
+import java.util.*;
+
 
 public class Runner {
 
@@ -13,18 +14,26 @@ public class Runner {
                 .filter(p -> p.getValue() == Symbols.PRINCE)
                 .findFirst()
                 .orElse(null);
-        System.out.println(prince);
+        //System.out.println(prince);
         if (prince != null) {
+            int move = new Move(Labyrinth.getLabyrinth(), new ArrayList<Point>()).rescuePrincessStart(prince);
 
-            int timeRescue = 5 * new Move(Labyrinth.getLabyrinth()).RescuePrincessStart(prince);
-            System.out.println("step= " + timeRescue / 5);
-            System.out.println(timeRescue);
         }
 
+        Set<Integer> set = VriablePath.getInstance().get();
 
+        List<Integer> setTime = new ArrayList<>();
+        set.forEach(element -> setTime.add(element));
+        Integer step = setTime.stream().sorted().findFirst().get();
+        //  System.out.println(setTime);
+
+        int timeRescue = 5 * step;
+        System.out.println(timeRescue);
     }
 
-
 }
+
+
+
 
 

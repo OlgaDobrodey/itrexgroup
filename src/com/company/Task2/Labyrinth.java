@@ -32,7 +32,7 @@ public class Labyrinth {
                 line = reader.readLine();
 
                 for (int x = 0; x < m; x++) {
-                    if (line.length() == n && line.matches("[.o21]{3}")) {
+                    if (line.length() == n && line.matches("[.o21]{"+n+"}")) {
                         for (int y = 0; y < n; y++) {
                             list.add(new Point(level, x, y, line.charAt(y)));
                         }
