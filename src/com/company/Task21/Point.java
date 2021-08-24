@@ -1,6 +1,9 @@
-package com.company.Task2;
+package com.company.Task21;
 
-public class Point {
+
+import java.io.Serializable;
+
+public class Point  implements Serializable {
 
     private int level;
     private int x;
@@ -79,7 +82,7 @@ public class Point {
     }
 
     @Override
-    protected Point clone() throws CloneNotSupportedException {
+    public Point clone() throws CloneNotSupportedException {
 
         Point point = new Point();
         point.level = this.level;

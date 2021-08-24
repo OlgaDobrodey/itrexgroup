@@ -1,7 +1,6 @@
-package com.company.Task2;
+package com.company.Task21;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 
@@ -20,7 +19,7 @@ public class Move {
         });
     }
 
-    public int RescuePrincessStart(Point point) {
+    public int rescuePrincessStart(Point point) {
         pathPrince = new ArrayList<>();
         System.out.println(labyrinth);
         pathPrince.add(point);
@@ -28,7 +27,7 @@ public class Move {
         System.out.println(pathPrince);
 //        System.out.println(labyrinth);
 //        System.out.println(Labyrinth.getLabyrinth());
-
+        VriablePath.getInstance().addSet(pathPrince);
         return pathPrince.size() - 1;
     }
 
@@ -36,8 +35,8 @@ public class Move {
 
         System.out.println("level= " + point.getLevel());
         if (point.getLevel() < Labyrinth.getH()) {
-            Point pointUnderFloor = getPointUnderFloor(point);
-            if (Condition.nextLevelFreeSpace(point.getValue(), pointUnderFloor.getValue())) {
+           Point pointUnderFloor = getPointUnderFloor(point);
+            if (nextLevelFreeSpace(point.getValue(), pointUnderFloor.getValue())) {
                 return step(pointUnderFloor);
             }
         }
@@ -92,7 +91,7 @@ public class Move {
         System.out.println("remove"+ remove);
 
         RescuePrincess(pathPrince.get(pathPrince.size()-1));
-     //   System.out.println("i don't know, what you to do");
+        //   System.out.println("i don't know, what you to do");
         return 0;
     }
 
@@ -147,5 +146,11 @@ public class Move {
                 .orElse(null);
         return pointResult;
     }
+    private boolean nextLevelFreeSpace(char symbolThisLevel, char symbolNextLevel) {
+        return ((symbolThisLevel == Symbols.FREE_SPACE || symbolThisLevel == Symbols.PRINCE)
+                && symbolNextLevel == Symbols.FREE_SPACE);
+    }
+
 
 }
+

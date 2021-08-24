@@ -1,9 +1,7 @@
-package com.company.Task2;
+package com.company.Task21;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 public class EXPEREMENT {
 
