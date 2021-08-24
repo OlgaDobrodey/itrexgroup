@@ -16,7 +16,7 @@ public class Runner {
                 .orElse(null);
         System.out.println(prince);
         if (prince != null) {
-           int move= new Move(Labyrinth.getLabyrinth()).rescuePrincessStart(prince);
+           int move= new Move(Labyrinth.getLabyrinth(),new ArrayList<Point>()).rescuePrincessStart(prince);
 
         }
 
