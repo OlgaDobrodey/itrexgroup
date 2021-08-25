@@ -55,14 +55,13 @@ public class Point  implements Serializable {
     @Override
     public String toString() {
         return
-//                "Point{" +
+                "Point{" +
                      "level=" + level +
                         ", x=" + x +
                         ", y=" + y +
                        ", value=" +
-                        "" + value
-//                        +
-//                        '}'
+                        "" + value +
+                        '}'
                 ;
     }
 
