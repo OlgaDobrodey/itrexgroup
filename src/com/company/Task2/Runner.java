@@ -14,14 +14,14 @@ public class Runner {
                 .filter(p -> p.getValue() == Symbols.PRINCE)
                 .findFirst()
                 .orElse(null);
-        //System.out.println(prince);
+        System.out.println(prince);
         if (prince != null) {
-            int move = new Move(Labyrinth.getLabyrinth(), new ArrayList<Point>()).rescuePrincessStart(prince);
+            int move = new Move(Labyrinth.getLabyrinth() ).rescuePrincessStart(prince,new ArrayList<Point>());
 
         }
 
         Set<Integer> set = VriablePath.getInstance().get();
-
+        System.out.println(set);
         List<Integer> setTime = new ArrayList<>();
         set.forEach(element -> setTime.add(element));
         Integer step = setTime.stream().sorted().findFirst().get();

@@ -6,9 +6,11 @@ import java.util.List;
 
 public class Move {
     private List<Point> labyrinth;
-    public List<Point> pathPrince;
+    //public List<Point> pathPrince;
 
-    public Move(List<Point> labyrinth, List<Point> pathPrince) {
+    public Move(List<Point> labyrinth
+         //   , List<Point> pathPrince
+    ) {
         this.labyrinth = new ArrayList<>();
         labyrinth.forEach(point -> {
             try {
@@ -17,33 +19,36 @@ public class Move {
                 e.printStackTrace();
             }
         });
-        this.pathPrince = new ArrayList<>();
-        pathPrince.forEach(point -> {
-            try {
-                this.pathPrince.add(point.clone());
-            } catch (CloneNotSupportedException e) {
-                e.printStackTrace();
-            }
-        });
+//        this.pathPrince = new ArrayList<>();
+//        pathPrince.forEach(point -> {
+//            try {
+//                this.pathPrince.add(point.clone());
+//            } catch (CloneNotSupportedException e) {
+//                e.printStackTrace();
+//            }
+//        });
     }
 
-    public int rescuePrincessStart(Point point) {
-        pathPrince.add(point);
-        int countStepPrince = rescuePrincess(point);
+    public int rescuePrincessStart(Point point, List<Point> pathPrince) {
+       // pathPrince.add(point);
+        int countStepPrince = rescuePrincess(point, pathPrince);
         return pathPrince.size() - 1;
     }
 
-    private int rescuePrincess(Point point) {
+    private int rescuePrincess(Point point,List<Point> pathPrince) {
+        pathPrince.add(point);
         List<Point> variable = new ArrayList<>();
 
-//        System.out.println("level= " + point.getLevel());
+        System.out.println("level= " + point.getLevel());
+        System.out.println("point= "+ point);
+
         if (point.getLevel() < Labyrinth.getH()) {
             Point pointUnderFloor = getPointUnderFloor(point);
             if (pointUnderFloor.getValue() == Symbols.PRINCES) {
 
                // pathPrince.add(pointUnderFloor);
                 VriablePath.getInstance().addSet(pathPrince.size());
-      //          System.out.println(pathPrince);
+                System.out.println(pathPrince);
                 return pathPrince.size() - 1;
             }
             if (nextLevelFreeSpace(point.getValue(), pointUnderFloor.getValue())) {
@@ -56,7 +61,7 @@ public class Move {
                 if ((getPointUp(point).getValue() == Symbols.PRINCES)) {
                     //pathPrince.add(getPointUp(point));
                     VriablePath.getInstance().addSet(pathPrince.size());
-     //               System.out.println(pathPrince);
+                    System.out.println(pathPrince);
                     return pathPrince.size() - 1;
                 }
             }
@@ -64,7 +69,7 @@ public class Move {
                 if ((getPointDown(point).getValue() == Symbols.PRINCES)) {
                    // pathPrince.add(getPointDown(point));
                     VriablePath.getInstance().addSet(pathPrince.size());
-   //                 System.out.println(pathPrince);
+                    System.out.println(pathPrince);
                     return pathPrince.size() - 1;
                 }
             }
@@ -72,7 +77,7 @@ public class Move {
                 if ((getPointLeft(point).getValue() == Symbols.PRINCES)) {
                  //   pathPrince.add(getPointLeft(point));
                     VriablePath.getInstance().addSet(pathPrince.size());
-       //             System.out.println(pathPrince);
+                   System.out.println(pathPrince);
                     return pathPrince.size() - 1;
                 }
             }
@@ -80,7 +85,7 @@ public class Move {
                 if ((getPointRight(point).getValue() == Symbols.PRINCES)) {
                   //  pathPrince.add(getPointRight(point));
                     VriablePath.getInstance().addSet(pathPrince.size());
-     //               System.out.println(pathPrince);
+                   System.out.println(pathPrince);
                     return pathPrince.size() - 1;
                 }
             }
@@ -113,13 +118,15 @@ public class Move {
         if (variable.size() == 0) {
             point.setValue('o');
             Boolean remove = pathPrince.remove(point);
+            Point recovery = pathPrince.get(pathPrince.size()-1);
+            pathPrince.remove(pathPrince.size()-1);
           //  System.out.println("remove" + remove);
 
-            rescuePrincess(pathPrince.get(pathPrince.size() - 1));
+            rescuePrincess(recovery,pathPrince);
         } else if (variable.size() == 1) {
-            return step(variable.get(0));
+            return step(variable.get(0),pathPrince);
         } else {
-            step(variable.get(0));
+            step(variable.get(0),pathPrince);
             for (int i = 1; i < variable.size(); i++) {
                 List<Point> labyrinthNew = new ArrayList<>();
                 this.labyrinth.forEach(p -> {
@@ -136,7 +143,7 @@ public class Move {
                 labyrinthNew.add(search);
                // System.out.println("labyrinthNew="+labyrinthNew);
 
-                int a = new Move(labyrinthNew, pathPrince).rescuePrincessStart(variable.get(i));
+                int a = new Move(labyrinthNew).rescuePrincessStart(variable.get(i),pathPrince);
 
             }
         }
@@ -145,10 +152,10 @@ public class Move {
         return 0;
     }
 
-    private int step(Point point) {
-        pathPrince.add(point);
+    private int step(Point point, List<Point> pathPrince) {
+      // pathPrince.add(point);
     //    System.out.println(pathPrince.size() - 1);
-        int i = rescuePrincess(point);
+        int i = rescuePrincess(point,pathPrince);
         return pathPrince.size() - 1;
     }
 

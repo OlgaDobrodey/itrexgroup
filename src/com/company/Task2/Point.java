@@ -56,10 +56,10 @@ public class Point  implements Serializable {
     public String toString() {
         return
 //                "Point{" +
-//                        "level=" + level +
-//                        ", x=" + x +
-//                        ", y=" + y +
-//                        ", value=" +
+                     "level=" + level +
+                        ", x=" + x +
+                        ", y=" + y +
+                       ", value=" +
                         "" + value
 //                        +
 //                        '}'
